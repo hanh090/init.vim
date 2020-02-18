@@ -32,7 +32,6 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'alvan/vim-closetag'
 Plug 'phthhieu/vim-test'
 Plug 'jremmen/vim-ripgrep'
-Plug 'jiangmiao/auto-pairs'
 
 " Git
 Plug 'tpope/vim-fugitive'
@@ -40,16 +39,14 @@ Plug 'benmills/vimux'
 
 " Dev
 " Plug 'vim-scripts/Decho'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
-" COC Vim
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Coding style
-" Require npm install --global import-js
-Plug 'galooshi/vim-import-js'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
-  \ 'for': ['javascript', 'css', 'json', 'scss', 'html', 'xml', 'yml', 'haml', 'erb'] }
-" Plug 'jiangmiao/auto-pairs'
+  \ 'for': ['javascript', 'css', 'json', 'scss'] }
+Plug 'jiangmiao/auto-pairs'
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -59,8 +56,11 @@ else
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
-"souce ~/.config/nvim/init.vim Send command to tmux
+" Send command to tmux
 Plug 'jpalardy/vim-slime'
+
+Plug 'galooshi/vim-import-js'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
 
@@ -68,11 +68,12 @@ let g:LanguageClient_serverCommands = {
     \ 'reason': ['~/.config/nvim/reason-language-server.exe'],
     \ }
 
-let g:deoplete#enable_at_startup = 1
+" let g:deoplete#enable_at_startup = 1
+
+let g:airline_powerline_fonts = 1
 
 nnoremap <Esc> :noh<CR><Esc>
-nnoremap <Enter> o<Esc>
-nnoremap <S-Enter> O<Esc>
+
 "========================================================
 " leader config
 "========================================================
@@ -85,10 +86,15 @@ noremap <leader>f :FZF<CR>
 noremap <leader>a :Ag <CR>
 noremap <leader>o :Buffers <CR>
 nnoremap <silent> <leader>ag :Ag <C-R><C-W><CR>
+nnoremap <C-g> :Rg<Cr>
 
 " Quick saving / edit
 noremap <leader>w :w<cr>
 noremap <leader>q :q<cr>
+" Add new line
+noremap <Enter> o <Esc><cr>
+noremap <S-Enter> O <Esc><cr>
+
 " Split screen
 noremap <leader>s :vsplit<cr>
 noremap <leader>v :split<cr>
@@ -111,9 +117,6 @@ noremap <leader>gb :Gblame<cr>
 map  <leader>j <Plug>(easymotion-bd-w)
 nmap <leader>j <Plug>(easymotion-overwin-w)
 
-" Import current word
-nmap <leader>i :ImportJSFix<cr>
-
 " Custom nerdtree
 let g:NERDTreeSyntaxDisableDefaultExtensions = 1
 let g:NERDTreeDisableExactMatchHighlight = 1
@@ -122,14 +125,16 @@ let g:NERDTreeSyntaxEnabledExtensions = ['rb', 'js', 'html', 'haml', 'css', 'erb
 let g:NERDTreeLimitedSyntax = 1
 let g:NERDTreeHighlightCursorline = 0
 
+nmap <leader>i :ImportJSFix<cr>
+
 nmap <leader>ts :TestNearest<CR>
 nmap <leader>tt :TestFile<CR>
-nmap <leader>tf :call ToggleSourceSpecFile()<CR>
 
 let test#strategy = "vimux"
+let g:test#javascript#jest#executable = 'yarn test'
+
 let g:VimuxUseNearest = 0
-let g:test#javascript#jest#executable = 'nvm use default && yarn test'
-let g:VimuxOrientation = "h"
+let g:VimuxOrientation = "v"
 map <Leader>vq :VimuxCloseRunner<CR>
 map <Leader>vz :VimuxZoomRunner<CR>
 map <Leader>vi :VimuxInspectRunner<CR>
@@ -167,24 +172,28 @@ set nobackup
 set noswapfile
 set number
 set rnu
-set modifiable
 
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " AleFix
-let g:ale_linters = {'javascript': ['eslint', 'flow'], 'ruby': ['rubocop'], 'html': ['prettier']}
-let g:ale_fixers = {'javascript': ['eslint', 'prettier'], 'ruby': ['rubocop'], 'html': ['prettier']}
-" let g:ale_fix_on_save = 0
-"
-" GoTo code navigation.
+let g:ale_linters = {'javascript': ['eslint', 'flow'], 'ruby': ['rubocop']}
+let g:ale_fixers = {'javascript': ['eslint', 'prettier'], 'ruby': ['rubocop']}
+
+" ==== START COC config
+set nowritebackup
+" You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=300
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+" always show signcolumns
+set signcolumn=yes
+" Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
-
-" Use K to show documentation in preview window.
+" Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
-
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
@@ -192,6 +201,7 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
+" === END COC config
 
 " Auto format
 autocmd BufWritePre * StripWhitespace
@@ -201,98 +211,10 @@ autocmd BufWritePre *.js,*.jsx,*.css,*.scss,*.less Prettier
 inoremap jk <ESC>
 inoremap jj <ESC>
 
-" Terminal mode
-" :tnoremap <Esc> <C-\><C-n>
-:nmap <leader>t :terminal <CR>
-
 " Custom FZF
-let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore-vcs --hidden --glob !.git --glob !node_modules'
 
 colorscheme solarized8_high
 
 " Required for operations modifying multiple buffers like rename.
 set hidden
-
-" Custom Script
-
-function! GoToSourceFile() abort
-  let file = expand("%")
-  let parts = split(file, "/")
-
-  let last = parts[-1]
-  let fileName = split(last, '\.')[0]
-  let extension = split(last, '\.')[2]
-
-  let sourceFile = join(parts[:-3] + [join([fileName, extension], '.')], '/')
-  if filereadable(sourceFile)
-    execute "edit +" . "0" . " " . sourceFile
-    return
-  endif
-
-  echoerr "Source file not found"
-endfunction
-
-function! GoToSpecFile() abort
-  let file = expand("%")
-  let parts = split(file, "/")
-
-  let last = parts[-1]
-  let fileName = split(last, '\.')[0]
-  let extension = split(last, '\.')[1]
-
-  let specFile = join(parts[:-2] + ['__tests__', join([fileName, 'spec', extension], '.')], '/')
-  if filereadable(specFile)
-    execute "edit +" . "0" . " " . specFile
-    return
-  endif
-
-  echoerr "Test file not found"
-endfunction
-
-
-function! ToggleSourceSpecFile() abort
-  let file = expand("%")
-  if file =~ 'spec'
-    call GoToSourceFile()
-  else
-    call GoToSpecFile()
-  endif
-endfunction
-
-" ReasonML in floating window
-command! ReasonML :call ReasonMLFloatingWindow()
-function! ReasonMLFloatingWindow()
-  :call OpenFloatingWindow()
-
-  terminal cd $HOME/.config/nvim/reasonml && nvim -u playground.vim -O Reason.re Javascript.js
-  startinsert
-  autocmd TermClose * ++once :q
-endfunction
-
-
-function! OpenFloatingWindow()
-  let height = float2nr((&lines - 2) * 0.6)
-  let width = float2nr(&columns * 0.6)
-  let row = float2nr((&lines - height) / 2)
-  let col = float2nr((&columns - width) / 2)
-
-  let opts = {
-        \ 'relative': 'editor',
-        \ 'row': row,
-        \ 'col': col,
-        \ 'width': width,
-        \ 'height': height
-        \ }
-
-  let buf = nvim_create_buf(v:false, v:true)
-  let win = nvim_open_win(buf, v:true, opts)
-
-  call setwinvar(win, '&winhl', 'Normal:StatusLine')
-  setlocal
-        \ buftype=nofile
-        \ nobuflisted
-        \ bufhidden=hide
-        \ nonumber
-        \ norelativenumber
-        \ signcolumn=no
-endfunction
