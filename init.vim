@@ -33,7 +33,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'alvan/vim-closetag'
 Plug 'phthhieu/vim-test'
 Plug 'jremmen/vim-ripgrep'
-
+Plug 'tmhedberg/matchit'
 " Git
 Plug 'tpope/vim-fugitive'
 Plug 'benmills/vimux'
@@ -60,6 +60,7 @@ Plug 'jpalardy/vim-slime'
 
 Plug 'galooshi/vim-import-js'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc-java'
 
 
 " Airline for status line
@@ -128,7 +129,6 @@ nnoremap cp :let @* = expand("%")<CR>
 nnoremap cP :let @* = expand("%:p")<CR>
 
 " Git
-
 noremap <leader>gu :Gpull<cr>
 noremap <leader>gp :Gpush<cr>
 noremap <leader>gb :Gblame<cr>
@@ -237,7 +237,8 @@ inoremap jj <ESC>
 " Custom FZF
 let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore-vcs --hidden --glob !.git --glob !node_modules'
 
+" Set background and colorscheme
 colorscheme solarized8_high
-
+set background=dark
 " Required for operations modifying multiple buffers like rename.
 set hidden
