@@ -6,7 +6,6 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'carlitux/deoplete-ternjs'
-Plug 'codeindulgence/vim-tig'
 
 " Theme + Style
 Plug 'roosta/vim-srcery'
@@ -62,6 +61,10 @@ Plug 'jpalardy/vim-slime'
 Plug 'galooshi/vim-import-js'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+
+" Airline for status line
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
 
@@ -141,6 +144,9 @@ let g:NERDTreeDisablePatternMatchHighlight = 1
 let g:NERDTreeSyntaxEnabledExtensions = ['rb', 'js', 'html', 'haml', 'css', 'erb', 'jsx', 'scss']
 let g:NERDTreeLimitedSyntax = 1
 let g:NERDTreeHighlightCursorline = 0
+
+" Custom airline
+let g:airline_theme='onedark'
 
 nmap <leader>i :ImportJSFix<cr>
 
