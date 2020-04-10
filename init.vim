@@ -12,8 +12,10 @@ Plug 'codeindulgence/vim-tig'
 Plug 'roosta/vim-srcery'
 Plug 'ap/vim-css-color'
 Plug 'mhinz/vim-signify'
-Plug 'itchyny/lightline.vim'
 Plug 'rafi/awesome-vim-colorschemes'
+
+" Register list
+Plug 'junegunn/vim-peekaboo'
 
 Plug 'reasonml-editor/vim-reason-plus'
 Plug 'autozimu/LanguageClient-neovim', {
@@ -39,8 +41,6 @@ Plug 'benmills/vimux'
 
 " Dev
 " Plug 'vim-scripts/Decho'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 
 " Coding style
 Plug 'prettier/vim-prettier', {
@@ -62,15 +62,35 @@ Plug 'jpalardy/vim-slime'
 Plug 'galooshi/vim-import-js'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+
 call plug#end()
+
+set laststatus=2
+
+function! GitBranch()
+  return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
+endfunction
+
+function! StatuslineGit()
+  let l:branchname = GitBranch()
+  return strlen(l:branchname) > 0?'  '.l:branchname.' ':''
+endfunction
+
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
 let g:LanguageClient_serverCommands = {
     \ 'reason': ['~/.config/nvim/reason-language-server.exe'],
     \ }
 
 " let g:deoplete#enable_at_startup = 1
-
-let g:airline_powerline_fonts = 1
 
 nnoremap <Esc> :noh<CR><Esc>
 
@@ -85,15 +105,16 @@ map <leader>r :NERDTreeFind<cr>
 noremap <leader>f :FZF<CR>
 noremap <leader>a :Ag <CR>
 noremap <leader>o :Buffers <CR>
+noremap <leader>h :History <CR>
 nnoremap <silent> <leader>ag :Ag <C-R><C-W><CR>
 nnoremap <C-g> :Rg<Cr>
 
 " Quick saving / edit
 noremap <leader>w :w<cr>
+noremap <leader>e :e<cr>
 noremap <leader>q :q<cr>
 " Add new line
-noremap <Enter> o <Esc><cr>
-noremap <S-Enter> O <Esc><cr>
+" noremap <Enter> o <Esc><cr>
 
 " Split screen
 noremap <leader>s :vsplit<cr>
@@ -107,10 +128,6 @@ nnoremap cP :let @* = expand("%:p")<CR>
 
 noremap <leader>gu :Gpull<cr>
 noremap <leader>gp :Gpush<cr>
-
-noremap <leader>gs :Tig<cr>
-noremap <leader>gl :Tig!<cr>
-noremap <leader>gs :Tig show<cr>
 noremap <leader>gb :Gblame<cr>
 
 " Easy jump
@@ -147,7 +164,7 @@ let g:slime_default_config = {"socket_name": "default", "target_pane": "{right-o
 
 filetype plugin indent on
 
-set clipboard =unnamed
+set clipboard=unnamedplus
 set autoindent " Copy indent from current line when starting a new line
 set smarttab
 set tabstop=2 " Number of space og a <Tab> character
