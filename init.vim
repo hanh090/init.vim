@@ -1,7 +1,6 @@
 call plug#begin('~/.vim/plugged')
 " Essential
 Plug 'sheerun/vim-polyglot'
-Plug 'dense-analysis/ale'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree'
@@ -22,18 +21,15 @@ Plug 'easymotion/vim-easymotion'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-surround'
-Plug 'ryanoasis/vim-devicons'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'alvan/vim-closetag'
-Plug 'phthhieu/vim-test'
 Plug 'jremmen/vim-ripgrep'
+" Extend matching for html tag
 Plug 'tmhedberg/matchit'
-" Git
-Plug 'tpope/vim-fugitive'
-Plug 'benmills/vimux'
 
-" Dev
-" Plug 'vim-scripts/Decho'
+"  Git
+Plug 'tpope/vim-fugitive'
+
 
 " Coding style
 Plug 'prettier/vim-prettier', {
@@ -49,13 +45,9 @@ else
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
-" Send command to tmux
-Plug 'jpalardy/vim-slime'
-
-Plug 'galooshi/vim-import-js'
+" Code completion, LSP
+Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'neoclide/coc-java'
-
 
 " Airline for status line
 Plug 'vim-airline/vim-airline'
@@ -64,15 +56,6 @@ Plug 'vim-airline/vim-airline-themes'
 call plug#end()
 
 set laststatus=2
-
-function! GitBranch()
-  return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
-endfunction
-
-function! StatuslineGit()
-  let l:branchname = GitBranch()
-  return strlen(l:branchname) > 0?'  '.l:branchname.' ':''
-endfunction
 
 function! RipgrepFzf(query, fullscreen)
   let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
@@ -84,18 +67,14 @@ endfunction
 
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
-let g:LanguageClient_serverCommands = {
-    \ 'reason': ['~/.config/nvim/reason-language-server.exe'],
-    \ }
-
-" let g:deoplete#enable_at_startup = 1
-
 nnoremap <Esc> :noh<CR><Esc>
 
 "========================================================
 " leader config
 "========================================================
 let mapleader=" "
+
+" NERD tree config
 noremap <silent><leader>m :NERDTreeToggle<CR>
 map <leader>r :NERDTreeFind<cr>
 
@@ -111,8 +90,6 @@ nnoremap <C-g> :Rg<Cr>
 noremap <leader>w :w<cr>
 noremap <leader>e :e<cr>
 noremap <leader>q :q<cr>
-" Add new line
-" noremap <Enter> o <Esc><cr>
 
 " Split screen
 noremap <leader>s :vsplit<cr>
@@ -142,25 +119,10 @@ let g:NERDTreeHighlightCursorline = 0
 " Custom airline
 let g:airline_theme='onedark'
 
-nmap <leader>i :ImportJSFix<cr>
-
-nmap <leader>ts :TestNearest<CR>
-nmap <leader>tt :TestFile<CR>
-
-let test#strategy = "vimux"
-let g:test#javascript#jest#executable = 'yarn test'
-
-let g:VimuxUseNearest = 0
-let g:VimuxOrientation = "v"
-map <Leader>vq :VimuxCloseRunner<CR>
-map <Leader>vz :VimuxZoomRunner<CR>
-map <Leader>vi :VimuxInspectRunner<CR>
-
-let g:closetag_filenames = '*.js,*.jsx'
+" Custom closetag
+let g:closetag_filenames = '*.js,*.jsx,*.html, *.xml'
+" Custom vim-move to use control to move line up/down
 let g:move_key_modifier = 'C'
-
-let g:slime_target = "tmux"
-let g:slime_default_config = {"socket_name": "default", "target_pane": "{right-of}"}
 
 filetype plugin indent on
 
@@ -191,12 +153,13 @@ set number
 set rnu
 
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
-
 " AleFix
 let g:ale_linters = {'javascript': ['eslint', 'flow'], 'ruby': ['rubocop']}
 let g:ale_fixers = {'javascript': ['eslint', 'prettier'], 'ruby': ['rubocop']}
 
 " ==== START COC config
+" List coc plugin
+let g:coc_global_extensions = ['coc-java', 'coc-json', 'coc-eslint']
 set nowritebackup
 " You will have bad experience for diagnostic messages when it's default 4000.
 set updatetime=300
