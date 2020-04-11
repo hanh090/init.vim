@@ -16,12 +16,6 @@ Plug 'rafi/awesome-vim-colorschemes'
 " Register list
 Plug 'junegunn/vim-peekaboo'
 
-Plug 'reasonml-editor/vim-reason-plus'
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-
 " Support
 Plug 'matze/vim-move'
 Plug 'easymotion/vim-easymotion'
@@ -223,10 +217,6 @@ nnoremap <silent> K :call <SID>show_documentation()<CR>
 " Symbol renaming.
 nmap <leader>rn <Plug>(coc-rename)
 
-" Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
@@ -248,7 +238,7 @@ inoremap jj <ESC>
 let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore-vcs --hidden --glob !.git --glob !node_modules'
 
 " Set background and colorscheme
-colorscheme solarized8_high
+colorscheme solarized8
 set background=dark
 " Required for operations modifying multiple buffers like rename.
 set hidden
