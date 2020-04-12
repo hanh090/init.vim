@@ -11,7 +11,7 @@ Plug 'roosta/vim-srcery'
 Plug 'ap/vim-css-color'
 Plug 'mhinz/vim-signify'
 Plug 'rafi/awesome-vim-colorschemes'
-
+Plug 'ryanoasis/vim-devicons'
 " Register list
 Plug 'junegunn/vim-peekaboo'
 
@@ -46,7 +46,6 @@ else
 endif
 
 " Code completion, LSP
-Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Airline for status line
@@ -118,6 +117,7 @@ let g:NERDTreeHighlightCursorline = 0
 
 " Custom airline
 let g:airline_theme='onedark'
+let g:webdevicons_enable_airline_statusline = 1
 
 " Custom closetag
 let g:closetag_filenames = '*.js,*.jsx,*.html, *.xml'
@@ -153,13 +153,9 @@ set number
 set rnu
 
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
-" AleFix
-let g:ale_linters = {'javascript': ['eslint', 'flow'], 'ruby': ['rubocop']}
-let g:ale_fixers = {'javascript': ['eslint', 'prettier'], 'ruby': ['rubocop']}
 
 " ==== START COC config
 " List coc plugin
-let g:coc_global_extensions = ['coc-java', 'coc-json', 'coc-eslint']
 set nowritebackup
 " You will have bad experience for diagnostic messages when it's default 4000.
 set updatetime=300
@@ -178,7 +174,7 @@ nmap <silent> gr <Plug>(coc-references)
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 " Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
+nmap <leader> rn <Plug>(coc-rename)
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -203,5 +199,7 @@ let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore-vcs --hidden --glob !.git --g
 " Set background and colorscheme
 colorscheme solarized8
 set background=dark
+hi CocUnderlineError cterm=underline ctermfg=61 gui=undercurl guisp=Red
+hi link CocErrorHighlight CocUnderlineError
 " Required for operations modifying multiple buffers like rename.
 set hidden
