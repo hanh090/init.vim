@@ -1,6 +1,6 @@
 call plug#begin('~/.vim/plugged')
 " Essential
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree'
@@ -32,9 +32,9 @@ Plug 'tpope/vim-fugitive'
 
 
 " Coding style
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install',
-  \ 'for': ['javascript', 'css', 'json', 'scss'] }
+" Plug 'prettier/vim-prettier', {
+"   \ 'do': 'yarn install',
+"   \ 'for': ['javascript', 'css', 'json', 'scss'] }
 Plug 'jiangmiao/auto-pairs'
 
 if has('nvim')
@@ -133,6 +133,7 @@ set tabstop=2 " Number of space og a <Tab> character
 set softtabstop=2
 set shiftwidth=2 " Number of spaces use by autoindent
 set lazyredraw
+set redrawtime=10000
 set regexpengine=1
 set expandtab
 
@@ -152,10 +153,14 @@ set noswapfile
 set number
 set rnu
 
+set showcmd
+
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " ==== START COC config
 " List coc plugin
+let g:coc_global_extensions = ['coc-java', 'coc-json', 'coc-eslint', 'coc-tsserver']
+
 set nowritebackup
 " You will have bad experience for diagnostic messages when it's default 4000.
 set updatetime=300
@@ -186,8 +191,8 @@ endfunction
 " === END COC config
 
 " Auto format
-autocmd BufWritePre * StripWhitespace
-autocmd BufWritePre *.js,*.jsx,*.css,*.scss,*.less Prettier
+" autocmd BufWritePre * StripWhitespace
+" autocmd BufWritePre *.js,*.jsx,*.css,*.scss,*.less Prettier
 
 " Quick escape
 inoremap jk <ESC>
