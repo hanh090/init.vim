@@ -159,7 +159,7 @@ let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " ==== START COC config
 " List coc plugin
-let g:coc_global_extensions = ['coc-java', 'coc-json', 'coc-eslint', 'coc-tsserver']
+let g:coc_global_extensions = ['coc-java', 'coc-json', 'coc-eslint', 'coc-tsserver', 'coc-highlight']
 
 set nowritebackup
 " You will have bad experience for diagnostic messages when it's default 4000.
