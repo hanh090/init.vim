@@ -8,7 +8,11 @@ Plug 'carlitux/deoplete-ternjs'
 
 "--------- Language syntax
 " JS
+Plug 'pangloss/vim-javascript'
+Plug 'maxmellon/vim-jsx-pretty'
 Plug 'leafgarland/typescript-vim'
+" Ruby
+Plug 'vim-ruby/vim-ruby'
 " ---------END Language syntax
 " Theme + Style
 Plug 'roosta/vim-srcery'
@@ -195,9 +199,9 @@ endfunction
 " === END COC config
 
 " Auto format
-" autocmd BufWritePre * StripWhitespace
+autocmd BufWritePre * StripWhitespaceOnChangedLines
 autocmd BufWritePre *.js,*.jsx,*.css,*.scss,*.less CocCommand prettier.formatFile 
-autocmd BufNewFile,BufRead *.tsx set filetype=typescript
+" autocmd BufNewFile,BufRead *.tsx set filetype=typescript
 
 " Quick escape
 inoremap jk <ESC>
