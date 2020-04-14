@@ -6,6 +6,10 @@ Plug 'junegunn/fzf.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'carlitux/deoplete-ternjs'
 
+"--------- Language syntax
+" JS
+Plug 'leafgarland/typescript-vim'
+" ---------END Language syntax
 " Theme + Style
 Plug 'roosta/vim-srcery'
 Plug 'ap/vim-css-color'
@@ -159,7 +163,7 @@ let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " ==== START COC config
 " List coc plugin
-let g:coc_global_extensions = ['coc-java', 'coc-json', 'coc-eslint', 'coc-tsserver', 'coc-highlight']
+let g:coc_global_extensions = ['coc-java', 'coc-json', 'coc-eslint', 'coc-tsserver', 'coc-highlight', 'coc-prettier']
 
 set nowritebackup
 " You will have bad experience for diagnostic messages when it's default 4000.
@@ -192,7 +196,8 @@ endfunction
 
 " Auto format
 " autocmd BufWritePre * StripWhitespace
-" autocmd BufWritePre *.js,*.jsx,*.css,*.scss,*.less Prettier
+autocmd BufWritePre *.js,*.jsx,*.css,*.scss,*.less CocCommand prettier.formatFile 
+autocmd BufNewFile,BufRead *.tsx set filetype=typescript
 
 " Quick escape
 inoremap jk <ESC>
