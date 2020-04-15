@@ -3,7 +3,7 @@ call plug#begin('~/.vim/plugged')
 " Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'scrooloose/nerdtree'
+Plug 'preservim/nerdtree'
 Plug 'carlitux/deoplete-ternjs'
 
 "--------- Language syntax
@@ -209,6 +209,7 @@ inoremap jj <ESC>
 
 " Custom FZF
 let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore-vcs --hidden --glob !.git --glob !node_modules'
+let g:fzf_preview_window = 'right:40%'
 
 " Set background and colorscheme
 colorscheme solarized8
