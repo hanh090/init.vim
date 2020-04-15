@@ -3,7 +3,8 @@ call plug#begin('~/.vim/plugged')
 " Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'preservim/nerdtree'
+" Plug 'preservim/nerdtree'
+Plug 'lambdalisue/fern.vim'
 Plug 'carlitux/deoplete-ternjs'
 
 "--------- Language syntax
@@ -20,6 +21,7 @@ Plug 'ap/vim-css-color'
 Plug 'mhinz/vim-signify'
 Plug 'rafi/awesome-vim-colorschemes'
 Plug 'ryanoasis/vim-devicons'
+Plug 'lambdalisue/fern-renderer-devicons.vim'
 " Register list
 Plug 'junegunn/vim-peekaboo'
 
@@ -29,13 +31,15 @@ Plug 'easymotion/vim-easymotion'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'tomtom/tcomment_vim'
 Plug 'tpope/vim-surround'
-Plug 'terryma/vim-multiple-cursors'
+" Plug 'terryma/vim-multiple-cursors'
 Plug 'alvan/vim-closetag'
 Plug 'jremmen/vim-ripgrep'
 " Extend matching for html tag
 Plug 'tmhedberg/matchit'
 
 "  Git
+Plug 'rbgrouleff/bclose.vim'
+Plug 'iberianpig/tig-explorer.vim'
 Plug 'tpope/vim-fugitive'
 
 
@@ -81,10 +85,9 @@ nnoremap <Esc> :noh<CR><Esc>
 "========================================================
 let mapleader=" "
 
-" NERD tree config
-noremap <silent><leader>m :NERDTreeToggle<CR>
-map <leader>r :NERDTreeFind<cr>
-
+noremap <silent><leader>m :Fern . -drawer -toggle<CR>
+" map <leader>r :NERDTreeFind<cr>
+map <leader>r :Fern . -reveal=% -drawer<CR>
 " Searching
 noremap <leader>f :FZF<CR>
 noremap <leader>a :Ag <CR>
@@ -122,6 +125,8 @@ let g:NERDTreeDisablePatternMatchHighlight = 1
 let g:NERDTreeSyntaxEnabledExtensions = ['rb', 'js', 'html', 'haml', 'css', 'erb', 'jsx', 'scss']
 let g:NERDTreeLimitedSyntax = 1
 let g:NERDTreeHighlightCursorline = 0
+let g:fern#renderer = "devicons"
+
 
 " Custom airline
 let g:airline_theme='onedark'
@@ -214,6 +219,7 @@ let g:fzf_preview_window = 'right:40%'
 " Set background and colorscheme
 colorscheme solarized8
 set background=dark
+hi CocErrorSign cterm=bold,reverse ctermfg=160 ctermbg=230 guifg=White guibg=Red
 hi CocUnderlineError cterm=underline ctermfg=61 gui=undercurl guisp=Red
 hi link CocErrorHighlight CocUnderlineError
 " Required for operations modifying multiple buffers like rename.
