@@ -1,0 +1,7 @@
+{
+  "diagnostic.messageTarget":"echo",
+  "workspace.ignoredFiletypes":["markdown", "log", "txt", "help", "class", "jar"],
+  "tsserver.npm":"/usr/local/bin/npm",
+  "tsserver.log":"verbose",
+  "tsserver.trace.server":"verbose"
+}
