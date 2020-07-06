@@ -1,7 +1,8 @@
 {
-  "diagnostic.messageTarget":"echo",
-  "workspace.ignoredFiletypes":["markdown", "log", "txt", "help", "class", "jar"],
-  "tsserver.npm":"/usr/local/bin/npm",
-  "tsserver.log":"verbose",
-  "tsserver.trace.server":"verbose"
+  "diagnostic.messageTarget": "echo",
+  "workspace.ignoredFiletypes": ["log", "txt", "help", "class", "jar", "bs.js"],
+  "coc.source.file.ignorePatterns": ["node_modules/*"],
+  "tsserver.npm": "/usr/local/bin/npm",
+  "eslint.run": "onSave",
+  "diagnostic.refreshAfterSave": true
 }
